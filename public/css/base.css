@@ -1,0 +1,24 @@
+:root {
+  --ink: #1b1512;
+  --paper: #f3e9d2;
+  --red: #b3261e;
+  --gold: #d9a441;
+  --shadow: 6px 6px 0 var(--ink);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+}
+html, body { overflow-x: hidden; } /* fixed-position pseudo-elements can otherwise trigger a sideways scrollbar */
+
+/* on short mobile viewports, grid-centering can push a tall card above the fold — pin it to the top instead */
+@media (max-height: 700px) {
+  body { align-items: start; padding-top: 24px; padding-bottom: 24px; }
+}

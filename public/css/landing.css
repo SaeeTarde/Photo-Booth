@@ -1,0 +1,109 @@
+body {
+  background:
+    repeating-linear-gradient(90deg, #8f1c16 0 40px, #a5231b 40px 80px);
+}
+
+.card {
+  width: min(92vw, 420px);
+  padding: 36px 28px;
+  text-align: center;
+  background: var(--paper);
+  border: 4px solid var(--ink);
+  box-shadow: var(--shadow);
+  outline: 3px dashed var(--gold);
+  outline-offset: -14px;
+}
+
+.kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+
+h1 {
+  margin: 12px 0;
+  font-family: Georgia, serif;
+  font-size: clamp(38px, 12vw, 64px); /* scales down on narrow phones instead of wrapping mid-word */
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+
+
+.sub { margin-bottom: 28px; font-size: 14px; }
+
+.btn {
+  padding: 12px 20px;
+  font: inherit;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+}
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.btn.primary { width: 100%; background: var(--red); color: var(--paper); }
+
+
+.or { margin: 20px 0; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.or::before, .or::after { content: ""; flex: 1; border-top: 2px solid var(--ink); }
+
+#join-form { display: flex; gap: 10px; }
+#code {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  font: inherit;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background: #fff8e6;
+  border: 3px solid var(--ink);
+}
+
+/* Join button */
+#join-form button {
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+#join-form button:hover {
+  transform: scale(1.08);
+  background-color: #8f1c16;
+  color: white;
+}
+
+#create {
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+#create:hover {
+  transform: scale(1.03);
+  background-color:   #d6c498;
+  color:#a5231b;
+  cursor: pointer;
+}
+
+.heart {
+  color: #e63946;
+   font-size: 1.3em;
+  margin-left: 1px;
+}
+
+@media (max-width: 380px) {
+  .card { padding: 26px 18px; }
+  .sub { font-size: 13px; }
+  #join-form { flex-direction: column; }
+  #code { text-align: center; }
+}
+
+.credit-footer {
+  margin-top: 18px;
+  text-align: center;
+}
+.credit {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #8f1c16;
+  text-decoration: none;
+  opacity: 0.9;
+  border-bottom: 1px solid transparent;
+}
+.credit:hover { opacity: 1; border-bottom-color:#8f1c16; }

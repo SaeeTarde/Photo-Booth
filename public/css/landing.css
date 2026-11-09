@@ -107,3 +107,31 @@ h1 {
   border-bottom: 1px solid transparent;
 }
 .credit:hover { opacity: 1; border-bottom-color:#8f1c16; }
+
+.solo-link {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+}
+.solo-link:hover { background: #d6c498; color: #a5231b; }
+
+/* ---------- watch together ---------- */
+.watch-btn { display: block; width: 100%; }
+.watch-btn:hover { background: #d6c498; color: #a5231b; }
+
+#watch-form { display: flex; gap: 10px; margin-top: 12px; }
+#watch-code {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  font: inherit;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background: #fff8e6;
+  border: 3px solid var(--ink);
+}
+
+@media (max-width: 380px) {
+  #watch-form { flex-direction: column; }
+}

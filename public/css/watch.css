@@ -1,0 +1,92 @@
+/* ---------- watch together: dark theatre look ---------- */
+body.watch { background: #1a0a08; }
+.watch::before, .watch::after { display: none; } /* hide the doodles and paper grain */
+
+.watch-stage {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.screen-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  border: 4px solid var(--gold);
+  box-shadow: 8px 8px 0 var(--red);
+}
+.screen-wrap video {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+.screen-wrap.live video { display: block; }
+
+.stage-msg {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  line-height: 1.5;
+  font-size: clamp(16px, 2.6vw, 26px);
+  color: var(--paper);
+  background: repeating-linear-gradient(45deg, #3a0c0a 0 14px, #4a1210 14px 28px);
+}
+.screen-wrap.live .stage-msg { display: none; }
+
+.unmute { position: absolute; right: 12px; bottom: 12px; z-index: 2; }
+
+.watch-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.tip {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--paper);
+  opacity: 0.7;
+}
+
+/* desktop: big video on the left, slim chat on the right */
+@media (min-width: 641px) {
+  .watch-stage {
+    max-width: none;            /* use the full width, not just 1100px */
+    margin: 0;
+    padding: 12px 16px 12px;
+  }
+
+  /* the video fills the window height instead of being sized by width only */
+  .screen-wrap {
+    aspect-ratio: auto;
+    height: calc(100vh - 210px);
+    min-height: 320px;
+  }
+
+  .watch-controls { margin-top: 14px; }
+  .tip { margin-top: 10px; }
+
+  /* slim chat panel on the right */
+  .watch .chat {
+    top: 84px;
+    bottom: 16px;
+    height: auto;
+    width: 300px;
+  }
+
+  /* when chat is open, leave room for it (300px chat + 16px gap + 16px edge) */
+  .watch:has(#chat:not([hidden])) .watch-stage { margin-right: 332px; }
+}

@@ -57,3 +57,46 @@ export function buildStrip(canvas, shots, { filter = 'none', room = '' } = {}) {
   ctx.font = '24px "Courier New", monospace';
   ctx.fillText(date, STRIP_W / 2, H - 28);
 }
+
+// ---------- solo strip: one column, 4 square photos ----------
+export function buildSoloStrip(canvas, shots, { filter = 'none' } = {}) {
+  const W = PADX * 2 + P;
+  const H = TOP + shots.length * P + (shots.length - 1) * GAP + FOOT;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // film base
+  ctx.fillStyle = '#0f0b09';
+  ctx.fillRect(0, 0, W, H);
+
+  // sprocket holes on both edges
+  ctx.fillStyle = '#f3e9d2';
+  for (let y = 18; y < H - 10; y += 44) {
+    hole(ctx, 20, y);
+    hole(ctx, W - 44, y);
+  }
+
+  // frames
+  shots.forEach((shot, i) => {
+    const y = TOP + i * (P + GAP);
+    const tmp = document.createElement('canvas');
+    tmp.width = P;
+    tmp.height = P;
+    const t = tmp.getContext('2d');
+    t.drawImage(shot, 0, 0, P, P);
+    applyFilter(t, P, P, filter);
+    ctx.drawImage(tmp, PADX, y);
+  });
+
+  // date-stamp footer
+  const date = new Date()
+    .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    .toUpperCase();
+  ctx.fillStyle = '#e08a2b';
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 30px "Courier New", monospace';
+  ctx.fillText('SOLO BOOTH', W / 2, H - 62);
+  ctx.font = '24px "Courier New", monospace';
+  ctx.fillText(date, W / 2, H - 28);
+}

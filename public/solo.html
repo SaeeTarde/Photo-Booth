@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solo Booth</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/booth.css" />
+</head>
+<body class="solo">
+  <header class="curtain">
+    <button id="home" class="btn small ghost" title="Leave booth">← Home</button>
+    <div>
+      <span class="label">Booth</span>
+      <strong>Solo</strong>
+    </div>
+    <span id="status" class="pill">Starting camera…</span>
+    <a
+      href="https://www.instagram.com/lllavender_iykyk/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="credit"
+    >Made by Saee_Tarde</a>
+  </header>
+
+  <main class="stage">
+    <figure class="frame">
+      <div class="video-wrap">
+        <video id="local" autoplay playsinline muted></video>
+        <canvas id="local-overlay" class="overlay"></canvas>
+      </div>
+      <figcaption>You</figcaption>
+    </figure>
+  </main>
+
+  <footer class="controls">
+    <button id="filter-toggle" class="btn small">🐰 Bunny filter: Off</button>
+    <button id="snap" class="btn big" disabled>Snap</button>
+  </footer>
+
+  <div id="countdown" class="countdown"></div>
+  <div id="flash" class="flash"></div>
+
+  <section id="result" class="result" hidden>
+    <div class="strip-wrap"><canvas id="strip"></canvas></div>
+    <div class="result-controls">
+      <div id="filters" class="filters">
+        <button class="btn small active" data-filter="none">Classic</button>
+        <button class="btn small" data-filter="film">Film</button>
+        <button class="btn small" data-filter="sepia">Sepia</button>
+        <button class="btn small" data-filter="noir">Noir</button>
+        <button class="btn small" data-filter="poster">Poster</button>
+        <button class="btn small" data-filter="midnight">Midnight</button>
+        <button class="btn small" data-filter="vivid">Vivid</button>
+        <button class="btn small" data-filter="negative">Negative</button>
+        <button class="btn small" data-filter="pixel">Pixel</button>
+      </div>
+      <button id="download" class="btn">Download</button>
+      <button id="retake" class="btn">Retake</button>
+    </div>
+  </section>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script type="module" src="/js/solo.js"></script>
+</body>
+</html>

@@ -14,8 +14,21 @@ app.get('/room/:code', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'booth.html'));
 });
 
+// Solo booth
+app.get('/solo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'solo.html'));
+});
+
+// Watch together
+app.get('/watch/:code', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'watch.html'));
+});
+
 const rooms = new Map(); // code -> Set of sockets (max 2)
-const RELAY_TYPES = new Set(['offer', 'answer', 'ice', 'snap-start', 'reaction']);
+const RELAY_TYPES = new Set([
+  'offer', 'answer', 'ice', 'snap-start', 'reaction', 'chat', 'typing',
+  'share-start', 'share-ready', 'share-busy', 'share-stop',
+]);
 
 function send(ws, type, payload = {}) {
   if (ws.readyState === ws.OPEN) ws.send(JSON.stringify({ ...payload, type }));
@@ -49,6 +62,11 @@ wss.on('connection', (ws) => {
 
     // Everything else is relayed untouched to the other person in the room
     if (!ws.room || !RELAY_TYPES.has(msg.type)) return;
+    if (msg.type === 'chat') {
+      msg.text = String(msg.text || '').trim().slice(0, 500);
+      if (!msg.text) return;
+    }
+    if (msg.type === 'reaction') msg.emoji = String(msg.emoji || '').slice(0, 8);
     for (const p of rooms.get(ws.room) || []) {
       if (p !== ws) send(p, msg.type, msg);
     }

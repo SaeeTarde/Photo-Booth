@@ -47,7 +47,27 @@
   <button id="mic-toggle" class="btn small">🎤 Mic: On</button>
   <button id="snap" class="btn big" disabled>Snap</button>
 </footer>
+    <!-- ---------- chat ---------- -->
+  <button id="chat-toggle" class="chat-toggle" aria-label="Open chat">
+    💬<span id="chat-badge" class="badge" hidden>0</span>
+  </button>
 
+  <aside id="chat" class="chat" hidden>
+    <header class="chat-head">
+      <strong>Chat</strong>
+      <button id="chat-close" class="chat-x" aria-label="Close chat">✕</button>
+    </header>
+    <div id="react-bar" class="react-bar" title="Send a reaction"></div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div id="chat-typing" class="chat-typing" hidden>Partner is typing…</div>
+    <div id="emoji-picker" class="emoji-picker" hidden></div>
+    <div class="chat-input-row">
+      <button id="emoji-btn" class="chat-icon" aria-label="Emojis">😊</button>
+      <input id="chat-input" type="text" maxlength="500" autocomplete="off" placeholder="Say something…" />
+      <button id="chat-send" class="chat-send">Send</button>
+    </div>
+  </aside>
+  
   <div id="countdown" class="countdown"></div>
   <div id="flash" class="flash"></div>
 

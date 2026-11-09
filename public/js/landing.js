@@ -18,3 +18,13 @@ document.getElementById('join-form').addEventListener('submit', (e) => {
   const code = document.getElementById('code').value.trim().toUpperCase();
   if (code) location.href = `/room/${code}`;
 });
+
+document.getElementById('watch-create').addEventListener('click', () => {
+  location.href = `/watch/${makeCode()}`;
+});
+
+document.getElementById('watch-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const code = document.getElementById('watch-code').value.trim().toUpperCase();
+  if (code) location.href = `/watch/${code}`;
+});

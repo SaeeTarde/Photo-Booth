@@ -3,6 +3,7 @@ import { startCall } from './webrtc.js';
 import { captureSession } from './capture.js';
 import { buildStrip } from './strip.js';
 import { initDoodleFilter, attachTracker, startTracker, stopTracker } from './doodle.js';
+import { initChat } from './chat.js';
 
 const $ = (id) => document.getElementById(id);
 const room = location.pathname.split('/').pop().toUpperCase();
@@ -127,6 +128,7 @@ $('retake').addEventListener('click', () => (result.hidden = true));
 
 // ---------- signaling ----------
 const socket = createSocket();
+initChat(socket);
 
 socket.on('snap-start', runSession);
 socket.on('joined', ({ count }) => {

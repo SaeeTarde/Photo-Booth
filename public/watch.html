@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Watch Together</title>
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/booth.css" />
+  <link rel="stylesheet" href="/css/watch.css" />
+</head>
+<body class="watch">
+  <header class="curtain">
+    <button id="home" class="btn small ghost" title="Leave room">← Home</button>
+    <div>
+      <span class="label">Watch room</span>
+      <strong id="room-code"></strong>
+    </div>
+    <span id="status" class="pill">Connecting…</span>
+    <button id="copy" class="btn small">Copy invite link</button>
+    <a
+      href="https://www.instagram.com/lllavender_iykyk/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="credit"
+    >Made by Saee_Tarde</a>
+  </header>
+
+  <main class="watch-stage">
+    <div id="screen-wrap" class="screen-wrap">
+      <video id="screen" autoplay playsinline></video>
+      <div id="stage-msg" class="stage-msg"></div>
+      <button id="unmute" class="btn small unmute" hidden>🔇 Tap to unmute</button>
+    </div>
+
+    <div class="watch-controls">
+      <button id="share" class="btn big">🖥️ Share screen</button>
+      <button id="stop-share" class="btn big" hidden>⏹ Stop sharing</button>
+      <button id="fullscreen" class="btn small">⛶ Fullscreen</button>
+    </div>
+
+    <p class="tip">
+      Tip: share a browser <b>tab</b> and tick “Share tab audio” so your partner hears the movie too.
+    </p>
+  </main>
+
+  <!-- ---------- chat (same as the booth) ---------- -->
+  <button id="chat-toggle" class="chat-toggle" aria-label="Open chat">
+    💬<span id="chat-badge" class="badge" hidden>0</span>
+  </button>
+
+  <aside id="chat" class="chat" hidden>
+    <header class="chat-head">
+      <strong>Chat</strong>
+      <button id="chat-close" class="chat-x" aria-label="Close chat">✕</button>
+    </header>
+    <div id="react-bar" class="react-bar" title="Send a reaction"></div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div id="chat-typing" class="chat-typing" hidden>Partner is typing…</div>
+    <div id="emoji-picker" class="emoji-picker" hidden></div>
+    <div class="chat-input-row">
+      <button id="emoji-btn" class="chat-icon" aria-label="Emojis">😊</button>
+      <input id="chat-input" type="text" maxlength="500" autocomplete="off" placeholder="Say something…" />
+      <button id="chat-send" class="chat-send">Send</button>
+    </div>
+  </aside>
+
+  <script type="module" src="/js/watch.js"></script>
+</body>
+</html>

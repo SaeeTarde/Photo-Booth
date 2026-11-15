@@ -4,7 +4,7 @@ const REACTIONS = ['❤️', '😂', '🔥', '👏', '😍', '🎉'];
 const SHORTCUTS = { ':)': '🙂', ':D': '😄', ':(': '🙁', ':P': '😛', ';)': '😉', '<3': '❤️', ':o': '😮' };
 const EMOJI_ONLY = /^(?:\p{Extended_Pictographic}[\uFE0F\u200D]*\s*){1,3}$/u;
 
-export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote' } = {}) {
+export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote', names = null } = {}) {
   const $ = (id) => document.getElementById(id);
   const panel = $('chat'), toggle = $('chat-toggle'), badge = $('chat-badge');
   const list = $('chat-messages'), input = $('chat-input'), typingEl = $('chat-typing');
@@ -17,7 +17,7 @@ export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote' 
   const scrollDown = () => (list.scrollTop = list.scrollHeight);
 
   // ---------- rendering (textContent only, so no HTML injection) ----------
-  function addMessage(text, mine) {
+  function addMessage(text, mine, who = '') {
     const wrap = document.createElement('div');
     wrap.className = `msg ${mine ? 'mine' : 'theirs'}`;
 
@@ -29,6 +29,12 @@ export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote' 
     time.className = 'time';
     time.textContent = clock();
 
+    if (!mine && who) {
+      const w = document.createElement('span');
+      w.className = 'who';
+      w.textContent = who;
+      wrap.append(w);
+    }
     wrap.append(bubble, time);
     list.appendChild(wrap);
     scrollDown();
@@ -82,7 +88,7 @@ export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote' 
     if (!partnerHere) return addSystem('Waiting for your partner to join…');
 
     text = text.split(' ').map((w) => SHORTCUTS[w] || w).join(' ');
-    socket.send('chat', { text });
+    socket.send('chat', { text, name: names?.me });
     addMessage(text, true);
     input.value = '';
     lastTypingSent = 0;
@@ -127,9 +133,9 @@ export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote' 
   });
 
   // ---------- incoming ----------
-  socket.on('chat', ({ text }) => {
+  socket.on('chat', ({ text, name }) => {
     typingEl.hidden = true;
-    addMessage(String(text), false);
+    addMessage(String(text), false, name || names?.partner || '');
     if (!open) {
       unread++;
       updateBadge();
@@ -147,13 +153,23 @@ export function initChat(socket, { floatLocal = 'local', floatRemote = 'remote' 
 
   socket.on('reaction', ({ emoji }) => floatEmoji(String(emoji), floatRemote));
 
-  socket.on('joined', ({ count }) => {
+   socket.on('joined', ({ count }) => {
     partnerHere = count === 2;
-    addSystem(partnerHere ? 'Your partner is here 👋' : 'Waiting for your partner…');
+    if (!partnerHere) addSystem('Waiting for your partner…');
   });
-  socket.on('peer-joined', () => { partnerHere = true; addSystem('Partner joined 🎉'); });
-  socket.on('peer-left', () => { partnerHere = false; typingEl.hidden = true; addSystem('Partner left'); });
+  socket.on('peer-joined', () => { partnerHere = true; });
+  socket.on('peer-left', () => {
+    partnerHere = false;
+    typingEl.hidden = true;
+    addSystem(`${names?.partner || 'Partner'} left`);
+  });
 
+  // the partner's name arrives right after they join
+  names?.onChange((name) => {
+    typingEl.textContent = `${name} is typing…`;
+    addSystem(`${name} joined 🎉`);
+  });
+  
   // open by default on desktop, closed on phones
   setOpen(window.innerWidth > 640);
 }

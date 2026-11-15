@@ -4,6 +4,7 @@ import { captureSession } from './capture.js';
 import { buildStrip } from './strip.js';
 import { initDoodleFilter, attachTracker, startTracker, stopTracker } from './doodle.js';
 import { initChat } from './chat.js';
+import { initNames } from './names.js';
 
 const $ = (id) => document.getElementById(id);
 const room = location.pathname.split('/').pop().toUpperCase();
@@ -128,7 +129,11 @@ $('retake').addEventListener('click', () => (result.hidden = true));
 
 // ---------- signaling ----------
 const socket = createSocket();
-initChat(socket);
+const names = initNames(socket);
+initChat(socket, { names });
+
+$('me-name').textContent = names.me;
+names.onChange((n) => ($('partner-name').textContent = n));
 
 socket.on('snap-start', runSession);
 socket.on('joined', ({ count }) => {
@@ -137,6 +142,7 @@ socket.on('joined', ({ count }) => {
 socket.on('peer-joined', () => (status.textContent = 'Partner arrived, connecting…'));
 socket.on('peer-left', () => {
   remoteFrame.classList.add('waiting');
+  $('partner-name').textContent = 'Partner';
   partnerLive = false;
   updateSnap();
   status.textContent = 'Partner left. Waiting…';

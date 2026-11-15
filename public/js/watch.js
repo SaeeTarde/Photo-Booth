@@ -1,5 +1,6 @@
 import { createSocket } from './socket.js';
 import { initChat } from './chat.js';
+import { initNames } from './names.js';
 
 const $ = (id) => document.getElementById(id);
 const ICE = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
@@ -35,12 +36,12 @@ function refresh() {
 
   if (sharing) {
     msg.textContent = partnerHere
-      ? "🎬 You're sharing your screen. Your partner can see it."
+      ? `🎬 You're sharing your screen. ${names.partner} can see it.`
       : '🎬 Screen ready. Waiting for your partner to join…';
     if (noAudio) msg.textContent += ' ⚠️ No audio is being shared. Share a Chrome tab and tick "Share tab audio".';
     status.textContent = partnerHere ? '● Sharing' : 'Waiting for partner…';
   } else if (partnerSharing) {
-    msg.textContent = "Connecting to your partner's screen…";
+    msg.textContent = `Connecting to ${names.partner}'s screen…`;
     status.textContent = live ? '● Watching' : 'Connecting…';
   } else {
     msg.textContent = partnerHere
@@ -164,7 +165,9 @@ stopBtn.addEventListener('click', stopSharing);
 
 // ---------- signaling ----------
 const socket = createSocket();
-initChat(socket, { floatLocal: 'screen', floatRemote: 'screen' });
+const names = initNames(socket);
+names.onChange(() => refresh());
+initChat(socket, { floatLocal: 'screen', floatRemote: 'screen', names });
 
 socket.on('joined', ({ count }) => { partnerHere = count === 2; refresh(); });
 socket.on('peer-joined', () => {

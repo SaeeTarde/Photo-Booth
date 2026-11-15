@@ -28,3 +28,48 @@ document.getElementById('watch-form').addEventListener('submit', (e) => {
   const code = document.getElementById('watch-code').value.trim().toUpperCase();
   if (code) location.href = `/watch/${code}`;
 });
+
+// remember the name for the booth and watch rooms
+const nameInput = document.getElementById('your-name');
+try { nameInput.value = localStorage.getItem('booth-name') || ''; } catch {}
+nameInput.addEventListener('input', () => {
+  const n = nameInput.value.trim().slice(0, 16);
+  try { if (n) localStorage.setItem('booth-name', n); } catch {}
+});
+
+async function trackVisitor() {
+  const counter = document.getElementById('visitor-count');
+
+  if (!counter) return;
+
+  try {
+    let visitorId = localStorage.getItem('booth-visitor-id');
+
+    if (!visitorId) {
+      visitorId = crypto.randomUUID();
+      localStorage.setItem('booth-visitor-id', visitorId);
+    }
+
+    const response = await fetch('/api/visitors/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ visitorId })
+    });
+
+    if (!response.ok) {
+      throw new Error('Visitor registration failed');
+    }
+
+    const data = await response.json();
+
+    counter.textContent = data.uniqueVisitors.toLocaleString();
+
+  } catch (error) {
+    console.error('Visitor tracking error:', error);
+    counter.textContent = '--';
+  }
+}
+
+trackVisitor();

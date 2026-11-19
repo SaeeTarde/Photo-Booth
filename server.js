@@ -81,25 +81,6 @@ app.post('/api/visitors/register', (req, res) => {
   }
 });
 
-// Get total unique visitors
-app.get('/api/visitors/count', (req, res) => {
-  try {
-    const result = db.prepare(`
-      SELECT COUNT(*) AS total FROM visitors
-    `).get();
-
-    res.json({
-      uniqueVisitors: result.total
-    });
-
-  } catch (error) {
-    console.error('Visitor count error:', error);
-
-    res.status(500).json({
-      error: 'Could not fetch visitor count'
-    });
-  }
-});
 
 // =====================================
 // STATIC FILES
